@@ -1,4 +1,4 @@
-import json, datetime
+import json, datetime, re
 
 
 def sort_and_filter():
@@ -24,3 +24,23 @@ def format_data(date):
     """
     date_time_obj = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%f') # получили и разложили дату имеющегося формата
     return date_time_obj.date().strftime("%d.%m.%Y") # собрали дату в нужной нам последовательности
+
+
+def card_format(text):
+    """
+    Принимает значения счетов "from" и "to" для форматирования
+    :return: строку со скрытыми данными счетов
+    """
+    word_list = text.split()
+    correct_text = []
+
+    for word in word_list:
+        if word.isalpha():
+            correct_text.append(word)
+        if word.isnumeric():
+            if len(word) == 16:
+                a = word.replace(word[6:-4], "******")
+                correct_text.append(" ".join(re.findall(r'\S\S\S\S', a)))
+            else:
+                correct_text.append("**" + word[-4:])
+    return " ".join(correct_text)
