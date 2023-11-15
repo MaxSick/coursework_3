@@ -1,4 +1,4 @@
-import json
+import json, datetime
 
 
 def sort_and_filter():
@@ -14,3 +14,13 @@ def sort_and_filter():
     filter_operations = [x for x in operations if x != {} and x['state'] == "EXECUTED"]  # отфильтровали по EXECUTED
     sorted_list = sorted(filter_operations, key=lambda x: x['date'], reverse=True)  # отсортировали всё по датам
     return sorted_list[:5]
+
+
+def format_data(date):
+    """
+    Переформатирует написание даты
+    :param date: %Y-%m-%dT%H:%M:%S.%f
+    :return: %d.%m.%Y
+    """
+    date_time_obj = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%f') # получили и разложили дату имеющегося формата
+    return date_time_obj.date().strftime("%d.%m.%Y") # собрали дату в нужной нам последовательности
